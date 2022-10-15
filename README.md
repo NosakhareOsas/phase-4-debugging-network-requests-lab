@@ -63,11 +63,24 @@ developing your own process.
 - Add a new toy when the toy form is submitted
 
   - How I debugged:
+    First thing I did was to check the preview tab under the network tab and i found this exception 
+    'exception: "#<NameError: uninitialized constant ToysController::Toys>"'. 
+    Next thing was to check rails console log for more information and I got the exact line with the issue 
+    app/controllers/toys_controller.rb:10:in `create' meaning line 10 in my toys controller.
+    There I found Toys.create which is wrong as Toys doesn't match any existing model name. 
+    I removed the 's', tried to create again and voila!!!! I got 201 status from rails console log.
+
 
 - Update the number of likes for a toy
 
   - How I debugged:
+    First thing I did was to check the headers tab under the network tab and i found this status code 
+    'Status Code: 204 No Content' meaning the request was successful but the client required a json format
+    response and did not get it. 
+    I added 'render json: toy, status: :ok', tried to like again and voila!!!! No more errors and like was updated 
 
 - Donate a toy to Goodwill (and delete it from our database)
 
   - How I debugged:
+    From headers in network tab i got 404 error meaning the delete route doesn't exist so I added destroy to resources in config/routes.rb.
+    On deleting again, it worked.
